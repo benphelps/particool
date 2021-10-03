@@ -6,7 +6,7 @@ class Particle {
 
     y: number = 0;
 
-    velocity: [number, number] = [0, 0];
+    velocity: { x: number, y: number } = { x: 0, y: 0 };
 
     color: [number, number, number, number] = [255, 0, 255, 1];
 
@@ -24,7 +24,7 @@ class Particle {
 
     replacedWith: Particle;
 
-    constructor(x: number, y: number, velocity: [number, number] = [0, 0]) {
+    constructor(x: number, y: number, velocity: { x: number, y: number } = { x: 0, y: 0 }) {
       this.x = x;
       this.y = y;
       this.velocity = velocity;

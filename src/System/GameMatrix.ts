@@ -18,9 +18,9 @@ class GameMatrix {
       const [x, y] = this.coordAt(index);
 
       if (x === 0 || y === 0 || x === (this.width - 1) || y === (this.width - 1)) {
-        this.matrix[index] = new Stone(x, y, [0, 0]);
+        this.matrix[index] = new Stone(x, y);
       } else {
-        this.matrix[index] = new Air(x, y, [0, 0]);
+        this.matrix[index] = new Air(x, y);
       }
     }
   }
