@@ -5,7 +5,7 @@ import Particle from '../Particle';
 import Air from './Air';
 
 class Smoke extends Gas {
-  color: [number, number, number, number] = [0, 0, 0, 0.25];
+  color: [number, number, number, number] = [0, 0, 0, 0.20];
 
   density: number = 0.1;
 
