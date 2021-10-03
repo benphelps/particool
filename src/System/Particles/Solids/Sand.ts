@@ -1,5 +1,5 @@
 import GameMatrix from '../../GameMatrix';
-// import Air from '../Gasses/Air';
+import Air from '../Gasses/Air';
 import Water from '../Liquids/Water';
 import Particle from '../Particle';
 import Solid from '../Solid';
@@ -33,7 +33,7 @@ class Sand extends Solid {
     if (!Sand.collidesWith(down)) {
       if (down instanceof Water) {
         matrix.replaceParticle(down, WetSand);
-        // matrix.replaceParticle(this, Air);
+        matrix.replaceParticle(this, Air);
       } else {
         matrix.swapParticles(this, down);
       }
@@ -43,14 +43,14 @@ class Sand extends Solid {
       if (rand > 0.5 && !Sand.collidesWith(leftDown)) {
         if (leftDown instanceof Water) {
           matrix.replaceParticle(leftDown, WetSand);
-          // matrix.replaceParticle(this, Air);
+          matrix.replaceParticle(this, Air);
         } else {
           matrix.swapParticles(this, leftDown);
         }
       } else if (rand <= 0.5 && !Sand.collidesWith(rightDown)) {
         if (rightDown instanceof Water) {
           matrix.replaceParticle(rightDown, WetSand);
-          // matrix.replaceParticle(this, Air);
+          matrix.replaceParticle(this, Air);
         } else {
           matrix.swapParticles(this, rightDown);
         }
