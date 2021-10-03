@@ -2,6 +2,7 @@ import Config from './Config';
 import GameMatrix from './GameMatrix';
 // import Air from './Particles/Gasses/Air';
 import Smoke from './Particles/Gasses/Smoke';
+import Steam from './Particles/Gasses/Steam';
 import Lava from './Particles/Liquids/Lava';
 import Water from './Particles/Liquids/Water';
 import Ember from './Particles/Solids/Ember';
@@ -122,6 +123,8 @@ class Game {
       this.CurrentParticle = Lava;
     } else if (particle === 'gunpowder') {
       this.CurrentParticle = Gunpowder;
+    } else if (particle === 'steam') {
+      this.CurrentParticle = Steam;
     }
   }
 
