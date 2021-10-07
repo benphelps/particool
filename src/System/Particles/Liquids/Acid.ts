@@ -4,10 +4,11 @@ import Air from '../Gasses/Air';
 import Steam from '../Gasses/Steam';
 import Liquid from '../Liquid';
 import Particle from '../Particle';
+import Solid from '../Solid';
 import Water from './Water';
 
 class Acid extends Liquid {
-  color: [number, number, number, number] = [139, 196, 79, 255];
+  color: [number, number, number, number] = [139, 196, 79, 1];
 
   flow: number = 5;
 
@@ -33,25 +34,25 @@ class Acid extends Liquid {
       matrix.swapParticles(this, rightDown);
     } else {
       const rand = Math.floor(Math.random() * 10);
-      let hitAir = false;
+      let hitSolid = false;
 
       for (let i = 1; i < this.flow; i += 1) {
         const left = matrix.particleAt(this.x - i, this.y);
         const right = matrix.particleAt(this.x + i, this.y);
 
-        if (!hitAir) {
+        if (!hitSolid) {
           if (rand > 5 && !Acid.collidesWith(right)) {
             matrix.swapParticles(this, right);
           } else if (rand <= 5 && !Acid.collidesWith(left)) {
             matrix.swapParticles(this, left);
           }
 
-          if (left instanceof Air || right instanceof Air) {
-            if (!hitAir) hitAir = true;
+          if (left instanceof Solid || right instanceof Solid) {
+            if (!hitSolid) hitSolid = true;
           }
         }
 
-        if (hitAir) break;
+        if (hitSolid) break;
       }
     }
 
@@ -61,7 +62,7 @@ class Acid extends Liquid {
       const left = matrix.particleAt(this.x - reach, this.y);
       const right = matrix.particleAt(this.x + reach, this.y);
 
-      const chanceToDissolve = Math.floor(Math.random() * 100);
+      const chanceToDissolve = Math.random();
 
       if (downB && downB.corrodibility >= chanceToDissolve) {
         matrix.replaceParticle(downB, Air);

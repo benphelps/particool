@@ -10,9 +10,11 @@ import WetSand from '../Solids/WetSand';
 import Lava from './Lava';
 
 class Water extends Liquid {
-  color: [number, number, number, number] = [86, 159, 227, 255];
+  color: [number, number, number, number] = [86, 159, 227, 1];
 
   flow = 5;
+
+  texturedIntensity = 0.85;
 
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Solid) || (particle instanceof Water)

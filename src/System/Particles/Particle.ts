@@ -26,6 +26,10 @@ class Particle {
 
     replacedWith: Particle;
 
+    texturedAlpha: number;
+
+    texturedIntensity: number = 0.95;
+
     constructor(x: number, y: number, velocity: { x: number, y: number } = { x: 0, y: 0 }) {
       this.x = x;
       this.y = y;
@@ -62,8 +66,13 @@ class Particle {
       const x = this.x * Config.scale;
       const y = this.y * Config.scale;
 
+      if (!this.texturedAlpha) {
+        this.texturedAlpha = Math.random() + this.texturedIntensity;
+        if (this.texturedAlpha > 1) this.texturedAlpha = 1;
+      }
+
       // eslint-disable-next-line no-param-reassign
-      context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3]})`;
+      context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3] === 1 ? this.texturedAlpha : this.color[3]})`;
       context.fillRect(x, y, Config.scale, Config.scale);
     }
 }

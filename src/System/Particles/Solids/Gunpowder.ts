@@ -3,7 +3,7 @@ import Particle from '../Particle';
 import Solid from '../Solid';
 
 class Gunpowder extends Solid {
-  color: [number, number, number, number] = [117, 117, 117, 255];
+  color: [number, number, number, number] = [117, 117, 117, 1];
 
   flow = 3;
 

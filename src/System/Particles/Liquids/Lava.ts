@@ -9,9 +9,11 @@ import Stone from '../Solids/Stone';
 import Water from './Water';
 
 class Lava extends Liquid {
-  color: [number, number, number, number] = [138, 18, 18, 255];
+  color: [number, number, number, number] = [138, 18, 18, 1];
 
   flow: number = 2;
+
+  texturedIntensity = 0.85;
 
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Particle) && !(particle instanceof Gas))) {

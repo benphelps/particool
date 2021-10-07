@@ -4,7 +4,7 @@ import Solid from '../Solid';
 import Sand from './Sand';
 
 class WetSand extends Solid {
-  color: [number, number, number, number] = [173, 158, 111, 255];
+  color: [number, number, number, number] = [173, 158, 111, 1];
 
   flow = 3;
 

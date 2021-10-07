@@ -6,11 +6,13 @@ import Solid from '../Solid';
 import WetSand from './WetSand';
 
 class Sand extends Solid {
-  color: [number, number, number, number] = [245, 220, 147, 255];
+  color: [number, number, number, number] = [245, 220, 147, 1];
 
   flow = 3;
 
-  corrodibility: number = 0.3;
+  corrodibility = 0.3;
+
+  texturedIntensity = 0.75;
 
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Solid) || (particle instanceof Sand)

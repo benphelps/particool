@@ -4,7 +4,7 @@ import Particle from '../Particle';
 import Air from './Air';
 
 class Bubble extends Gas {
-  color: [number, number, number, number] = [255, 255, 255, 255];
+  color: [number, number, number, number] = [255, 255, 255, 1];
 
   density: number = 0.1;
 
