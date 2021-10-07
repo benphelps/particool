@@ -1,7 +1,7 @@
 import Gas from '../Gas';
 
 class Air extends Gas {
-  color: [number, number, number, number] = [255, 255, 255, 0];
+  color: [number, number, number, number] = [255, 255, 255, 1];
 
   // update(matrix: GameMatrix) {
   //   const up = matrix.particleAt(this.x, this.y + 1);

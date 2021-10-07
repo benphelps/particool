@@ -1,16 +1,11 @@
-/* eslint-disable no-console */
 import GameMatrix from '../../GameMatrix';
 import Gas from '../Gas';
 import Air from '../Gasses/Air';
 import Steam from '../Gasses/Steam';
-// import Bubble from '../Gasses/Bubble';
 import Liquid from '../Liquid';
 import Particle from '../Particle';
 import Ember from '../Solids/Ember';
-// import Solid from '../Solid';
-// import Sand from '../Solids/Sand';
 import Stone from '../Solids/Stone';
-// import WetSand from '../Solids/WetSand';
 import Water from './Water';
 
 class Lava extends Liquid {
@@ -44,6 +39,7 @@ class Lava extends Liquid {
       for (let i = 1; i < this.flow; i += 1) {
         const left = matrix.particleAt(this.x - i, this.y);
         const right = matrix.particleAt(this.x + i, this.y);
+        const up = matrix.particleAt(this.x, this.y - i);
 
         if (left instanceof Air || right instanceof Air) {
           if (!hitAir) hitAir = true;
@@ -53,6 +49,11 @@ class Lava extends Liquid {
           matrix.swapParticles(this, right);
         } else if (rand <= 5 && !Lava.collidesWith(left)) {
           matrix.swapParticles(this, left);
+        }
+
+        if (rand < 0.001 && (up instanceof Water)) {
+          matrix.replaceParticle(up, Steam);
+          // matrix.replaceParticle(this, Bubble);
         }
 
         if (rand >= 0.49 && rand <= 0.5 && (down instanceof Water)) {

@@ -2,72 +2,90 @@
   --var-color: #000;
 }
 
-canvas {
-image-rendering: -moz-crisp-edges;
-image-rendering: -webkit-crisp-edges;
-image-rendering: pixelated;
-image-rendering: crisp-edges;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-button[name="stone"] {
+canvas {
+  margin: 0 auto;
+  display: block;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.controls {
+  margin: 5px auto;
+  display: block;
+  width: 600px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  width: 85px;
   border: 0;
-  padding: 3px 6px;
+  padding: 5px 0;
+  margin: 5px;
+  font-size: 14px;
+  text-align: center;
+  border: inset 2px rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+
+.button.selected {
+  font-weight: bold;
+  border: inset 2px rgba(0, 0, 0, 0.25);
+}
+
+.button[id="stone"] {
   background-color: rgb(153, 149, 141);
   color: rgb(230, 221, 204);
 }
 
-button[name="sand"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="sand"] {
   background-color: rgb(245, 220, 147);
   color: rgb(131, 114, 65);
 }
 
-button[name="water"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="water"] {
   background-color: rgb(86, 159, 227);
   color: rgb(232, 244, 255);
 }
 
-button[name="smoke"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="smoke"] {
   background-color: rgba(0, 0, 0, 0.25);
   color: rgba(255, 255, 255, 1);
 }
 
-button[name="wood"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="wood"] {
   background-color: rgb(133, 101, 77);
   color: rgb(241, 232, 225);
 }
 
-button[name="ember"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="ember"] {
   background-color: rgb(240, 90, 60);
   color: rgb(255, 207, 197);
 }
 
-button[name="lava"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="lava"] {
   background-color: rgb(138, 18, 18);
   color: rgb(233, 144, 144);
 }
 
-button[name="gunpowder"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="gunpowder"] {
   background-color: rgb(117, 117, 117);
   color: rgb(218, 218, 218);
 }
 
-button[name="steam"] {
-  border: 0;
-  padding: 3px 6px;
+.button[id="steam"] {
   background-color: rgb(97, 196, 255);
   color: rgb(46, 73, 88);
+}
+
+.button[id="acid"] {
+  background-color: rgb(139, 196, 79);
+  color: rgb(232, 255, 208);
 }

@@ -1,7 +1,5 @@
-/* eslint-disable no-console */
 import GameMatrix from '../../GameMatrix';
 import Air from '../Gasses/Air';
-// import Bubble from '../Gasses/Bubble';
 import Liquid from '../Liquid';
 import Particle from '../Particle';
 import Solid from '../Solid';

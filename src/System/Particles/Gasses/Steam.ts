@@ -12,7 +12,7 @@ class Steam extends Gas {
 
   flow: 10;
 
-  lifetime: number = 0.995;
+  lifetime: number = 0.999;
 
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Particle) && !(particle instanceof Air))) {

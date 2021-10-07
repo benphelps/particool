@@ -8,6 +8,8 @@ class Wood extends Solid {
 
   flamable: boolean = true;
 
+  corrodibility: number = 0.2;
+
   // update(matrix: GameMatrix) {
   //   const down = matrix.particleAt(this.x, this.y + 1);
   //   const leftDown = matrix.particleAt(this.x - 1, this.y + 1);

@@ -3,6 +3,7 @@ import Config from '../../Config';
 import GameMatrix from '../../GameMatrix';
 import Air from '../Gasses/Air';
 import Smoke from '../Gasses/Smoke';
+import Steam from '../Gasses/Steam';
 import Water from '../Liquids/Water';
 import Solid from '../Solid';
 
@@ -55,25 +56,31 @@ class Ember extends Solid {
 
       let extinguished = false;
 
-      if (this.replacedWith) {
-        if (down instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
-        } else if (up instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
-        } else if (left instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
-        } else if (right instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
-        } else if (leftDown instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
-        } else if (rightDown instanceof Water) {
-          matrix.replaceParticleWith(this, this.replacedWith);
-          extinguished = true;
+      if (down instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      } else if (up instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      } else if (left instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      } else if (right instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      } else if (leftDown instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      } else if (rightDown instanceof Water) {
+        if (this.replacedWith) matrix.replaceParticleWith(this, this.replacedWith);
+        extinguished = true;
+      }
+
+      if (extinguished) {
+        const chanceToSteam = Math.random();
+        if (chanceToSteam > 0.9 && (up instanceof Air)) {
+          matrix.replaceParticle(up, Steam);
+          matrix.replaceParticle(this, Water);
         }
       }
 

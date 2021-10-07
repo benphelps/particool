@@ -10,6 +10,8 @@ class Sand extends Solid {
 
   flow = 3;
 
+  corrodibility: number = 0.3;
+
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Solid) || (particle instanceof Sand)
     || (particle instanceof WetSand))) {

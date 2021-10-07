@@ -20,6 +20,8 @@ class Particle {
 
     flamable: boolean = false;
 
+    corrodibility: number = -1;
+
     birth: number = 0;
 
     replacedWith: Particle;

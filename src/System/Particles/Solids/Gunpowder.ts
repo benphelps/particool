@@ -11,6 +11,8 @@ class Gunpowder extends Solid {
 
   flamable: boolean = true;
 
+  corrodibility: number = 0.3;
+
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Solid) || (particle instanceof Gunpowder))) {
       return true;

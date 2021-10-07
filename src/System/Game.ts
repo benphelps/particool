@@ -3,6 +3,7 @@ import GameMatrix from './GameMatrix';
 // import Air from './Particles/Gasses/Air';
 import Smoke from './Particles/Gasses/Smoke';
 import Steam from './Particles/Gasses/Steam';
+import Acid from './Particles/Liquids/Acid';
 import Lava from './Particles/Liquids/Lava';
 import Water from './Particles/Liquids/Water';
 import Ember from './Particles/Solids/Ember';
@@ -35,6 +36,8 @@ class Game {
 
     this.canvas.width = Config.width * Config.scale;
     this.canvas.height = Config.height * Config.scale;
+
+    this.canvas.style.width = `${this.canvas.width}px`;
 
     this.setupEvents();
   }
@@ -102,7 +105,10 @@ class Game {
 
     this.canvas.addEventListener('wheel', (e) => {
       const scale = e.deltaY * -0.01;
-      this.drawingRadius = Math.floor(this.drawingRadius + scale);
+      const newScale = Math.floor(this.drawingRadius + scale);
+      if (newScale >= 0) {
+        this.drawingRadius = newScale;
+      }
     });
   }
 
@@ -125,7 +131,17 @@ class Game {
       this.CurrentParticle = Gunpowder;
     } else if (particle === 'steam') {
       this.CurrentParticle = Steam;
+    } else if (particle === 'acid') {
+      this.CurrentParticle = Acid;
     }
+
+    const elements: Element[] = Array.from(document.getElementsByClassName('button'));
+    elements.forEach((button) => {
+      button.classList.remove('selected');
+    });
+
+    const button = document.getElementById(particle);
+    button.classList.add('selected');
   }
 
   placeParticle(x: number, y: number) {
@@ -227,8 +243,8 @@ class Game {
     // }
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // this.context.fillStyle = 'black';
-    // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.fillStyle = 'white';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.matrix.draw(this.context);
 
     this.drawCursor(this.mouseX, this.mouseY);
