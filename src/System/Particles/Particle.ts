@@ -1,5 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
 import Config from '../Config';
 import GameMatrix from '../GameMatrix';
+import WebGL from '../WebGL';
 
 class Particle {
     x: number = 0;
@@ -28,12 +30,29 @@ class Particle {
 
     texturedAlpha: number;
 
-    texturedIntensity: number = 0.95;
+    texturedIntensity: number = 0.9;
+
+    uniqueId: string = uuidv4();
+
+    parent: Particle;
+
+    length: number;
 
     constructor(x: number, y: number, velocity: { x: number, y: number } = { x: 0, y: 0 }) {
       this.x = x;
       this.y = y;
       this.velocity = velocity;
+      this.birth = new Date().getTime();
+    }
+
+    reset(x: number, y: number, velocity: { x: number, y: number } = { x: 0, y: 0 }) {
+      this.x = x;
+      this.y = y;
+      this.velocity = velocity;
+      this.uniqueId = uuidv4();
+      this.parent = null;
+      this.length = 0;
+      this.replacedWith = null;
       this.birth = new Date().getTime();
     }
 
@@ -62,7 +81,7 @@ class Particle {
       b.setPositionTo(ax, ay);
     }
 
-    draw(context: CanvasRenderingContext2D) {
+    draw(webgl: WebGL) {
       const x = this.x * Config.scale;
       const y = this.y * Config.scale;
 
@@ -71,9 +90,13 @@ class Particle {
         if (this.texturedAlpha > 1) this.texturedAlpha = 1;
       }
 
-      // eslint-disable-next-line no-param-reassign
-      context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3] === 1 ? this.texturedAlpha : this.color[3]})`;
-      context.fillRect(x, y, Config.scale, Config.scale);
+      webgl.setColor(
+        this.color[0],
+        this.color[1],
+        this.color[2],
+        this.color[3],
+      );
+      webgl.drawPixel(x, y);
     }
 }
 

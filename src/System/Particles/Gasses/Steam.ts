@@ -1,18 +1,18 @@
-import Config from '../../Config';
 import GameMatrix from '../../GameMatrix';
 import Gas from '../Gas';
 import Water from '../Liquids/Water';
 import Particle from '../Particle';
+import Solid from '../Solid';
 import Air from './Air';
 
 class Steam extends Gas {
-  color: [number, number, number, number] = [97, 196, 255, 0.25];
+  color: [number, number, number, number] = [97, 196, 255, 0.5];
 
   density: number = 0.1;
 
-  flow: 10;
+  flow: 20;
 
-  lifetime: number = 0.999;
+  lifetime: number = 0.99;
 
   static collidesWith(particle: Particle) {
     if (particle && ((particle instanceof Particle) && !(particle instanceof Air))) {
@@ -20,15 +20,6 @@ class Steam extends Gas {
     }
 
     return false;
-  }
-
-  draw(context: CanvasRenderingContext2D) {
-    const x = this.x * Config.scale;
-    const y = this.y * Config.scale;
-
-    // eslint-disable-next-line no-param-reassign
-    context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3]})`;
-    context.fillRect(x, y, Config.scale, Config.scale);
   }
 
   update(matrix: GameMatrix) {
@@ -62,14 +53,14 @@ class Steam extends Gas {
     } else {
       // eslint-disable-next-line no-alert
       const rand = Math.random();
-      let hitAir = false;
+      let hitAnything = false;
 
       for (let i = 1; i < this.flow; i += 1) {
         const farLeft = matrix.particleAt(this.x - i, this.y);
         const farRight = matrix.particleAt(this.x + i, this.y);
 
-        if (farLeft instanceof Air || farRight instanceof Air) {
-          if (!hitAir) hitAir = true;
+        if (farLeft instanceof Solid || farRight instanceof Solid) {
+          if (!hitAnything) hitAnything = true;
         }
 
         if (rand > 0.5 && ((left instanceof Air) || (left instanceof Steam))) {
@@ -78,7 +69,7 @@ class Steam extends Gas {
           matrix.swapParticles(this, farRight);
         }
 
-        if (hitAir) break;
+        if (hitAnything) break;
       }
     }
   }

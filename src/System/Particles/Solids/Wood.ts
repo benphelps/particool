@@ -1,5 +1,6 @@
 // import GameMatrix from '../../GameMatrix';
 import Config from '../../Config';
+import WebGL from '../../WebGL';
 import Solid from '../Solid';
 
 class Wood extends Solid {
@@ -13,7 +14,7 @@ class Wood extends Solid {
 
   corrodibility: number = 0.005;
 
-  draw(context: CanvasRenderingContext2D) {
+  draw(webgl: WebGL) {
     const x = this.x * Config.scale;
     const y = this.y * Config.scale;
     let striped = false;
@@ -27,13 +28,21 @@ class Wood extends Solid {
     }
 
     if (striped) {
-      // eslint-disable-next-line no-param-reassign
-      context.fillStyle = `rgba(${this.colorDark[0]}, ${this.colorDark[1]}, ${this.colorDark[2]}, ${this.colorDark[3] === 1 ? this.texturedAlpha : this.colorDark[3]})`;
-      context.fillRect(x, y, Config.scale, Config.scale);
+      webgl.setColor(
+        this.colorDark[0],
+        this.colorDark[1],
+        this.colorDark[2],
+        this.colorDark[3] === 1 ? this.texturedAlpha : this.colorDark[3],
+      );
+      webgl.drawPixel(x, y);
     } else {
-      // eslint-disable-next-line no-param-reassign
-      context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3] === 1 ? this.texturedAlpha : this.color[3]})`;
-      context.fillRect(x, y, Config.scale, Config.scale);
+      webgl.setColor(
+        this.color[0],
+        this.color[1],
+        this.color[2],
+        this.color[3] === 1 ? this.texturedAlpha : this.color[3],
+      );
+      webgl.drawPixel(x, y);
     }
   }
 

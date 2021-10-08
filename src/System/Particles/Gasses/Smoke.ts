@@ -1,11 +1,11 @@
-import Config from '../../Config';
 import GameMatrix from '../../GameMatrix';
 import Gas from '../Gas';
 import Particle from '../Particle';
+import Solid from '../Solid';
 import Air from './Air';
 
 class Smoke extends Gas {
-  color: [number, number, number, number] = [0, 0, 0, 0.20];
+  color: [number, number, number, number] = [255, 255, 255, 0.35];
 
   density: number = 0.1;
 
@@ -19,15 +19,6 @@ class Smoke extends Gas {
     }
 
     return false;
-  }
-
-  draw(context: CanvasRenderingContext2D) {
-    const x = this.x * Config.scale;
-    const y = this.y * Config.scale;
-
-    // eslint-disable-next-line no-param-reassign
-    context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[3]})`;
-    context.fillRect(x, y, Config.scale, Config.scale);
   }
 
   update(matrix: GameMatrix) {
@@ -61,14 +52,14 @@ class Smoke extends Gas {
     } else {
       // eslint-disable-next-line no-alert
       const rand = Math.random();
-      let hitAir = false;
+      let hitAnything = false;
 
       for (let i = 1; i < this.flow; i += 1) {
         const farLeft = matrix.particleAt(this.x - i, this.y);
         const farRight = matrix.particleAt(this.x + i, this.y);
 
-        if (farLeft instanceof Air || farRight instanceof Air) {
-          if (!hitAir) hitAir = true;
+        if (farLeft instanceof Solid || farRight instanceof Solid) {
+          if (!hitAnything) hitAnything = true;
         }
 
         if (rand > 0.5 && ((left instanceof Air) || (left instanceof Smoke))) {
@@ -77,7 +68,7 @@ class Smoke extends Gas {
           matrix.swapParticles(this, farRight);
         }
 
-        if (hitAir) break;
+        if (hitAnything) break;
       }
     }
   }

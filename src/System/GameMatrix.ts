@@ -1,5 +1,7 @@
 import Air from './Particles/Gasses/Air';
 import Particle from './Particles/Particle';
+import ParticleFactory from './Particles/ParticleFactory';
+import WebGL from './WebGL';
 
 class GameMatrix {
   public matrix: Array<Particle>;
@@ -15,7 +17,7 @@ class GameMatrix {
 
     for (let index = 0; index < this.matrix.length; index += 1) {
       const [x, y] = this.coordAt(index);
-      this.matrix[index] = new Air(x, y);
+      this.matrix[index] = ParticleFactory.getParticle(Air, x, y);
     }
   }
 
@@ -35,8 +37,8 @@ class GameMatrix {
     }
   }
 
-  draw(context: CanvasRenderingContext2D) {
-    this.matrix.forEach((particle) => { if (particle) { particle.draw(context); } });
+  draw(webgl: WebGL) {
+    this.matrix.forEach((particle) => { if (particle) { particle.draw(webgl); } });
   }
 
   indexAt(x: number, y: number): number {
@@ -54,9 +56,28 @@ class GameMatrix {
     const index = this.indexAt(a.x, a.y);
     if (!index) return;
 
-    const newParticle = new ParticleType(a.x, a.y, a.velocity);
+    const existing = this.particleAt(a.x, a.y);
+
+    ParticleFactory.freeParticle(existing);
+    const newParticle = ParticleFactory.getParticle(ParticleType, a.x, a.y, a.velocity);
     newParticle.replacedWith = a;
     this.matrix[index] = newParticle;
+  }
+
+  replaceParticleChild(a: Particle, parent: Particle, ParticleType: typeof Particle) : Particle {
+    if (!(a instanceof Particle)) return null;
+
+    const index = this.indexAt(a.x, a.y);
+    if (!index) return null;
+
+    const newParticle = ParticleFactory.getParticle(ParticleType, a.x, a.y, a.velocity);
+    newParticle.parent = a;
+    newParticle.replacedWith = a;
+    this.matrix[index] = newParticle;
+
+    ParticleFactory.freeParticle(a);
+
+    return newParticle;
   }
 
   replaceParticleWith(a: Particle, b: Particle) {
@@ -66,6 +87,7 @@ class GameMatrix {
     const index = this.indexAt(a.x, a.y);
     if (!index) return;
     this.matrix[index] = b;
+    ParticleFactory.freeParticle(a);
   }
 
   swapParticles(a: Particle, b: Particle) {
@@ -96,11 +118,7 @@ class GameMatrix {
   newParticleAt(x: number, y: number, ParticleType: typeof Particle) {
     const existing = this.particleAt(x, y);
     if (!(existing instanceof ParticleType)) {
-      this.setParticleAt(
-        x,
-        y,
-        new ParticleType(x, y),
-      );
+      this.replaceParticle(existing, ParticleType);
     }
   }
 

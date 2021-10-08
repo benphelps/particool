@@ -1,5 +1,4 @@
 // import GameMatrix from '../../GameMatrix';
-import Config from '../../Config';
 import GameMatrix from '../../GameMatrix';
 import Air from '../Gasses/Air';
 import Smoke from '../Gasses/Smoke';
@@ -13,30 +12,6 @@ class Ember extends Solid {
   lifetime: number = 0.995;
 
   flow: number = 5;
-
-  draw(context: CanvasRenderingContext2D) {
-    const x = this.x * Config.scale;
-    const y = this.y * Config.scale;
-
-    // eslint-disable-next-line no-param-reassign
-    // const bloom = 20 - ((new Date().getTime() - this.birth) / 1000) + (Math.random() * 2);
-
-    if (this.replacedWith) {
-      context.fillStyle = `rgba(${this.replacedWith.color[0]}, ${this.replacedWith.color[1]}, ${this.replacedWith.color[2]}, 1)`;
-      context.fillRect(x, y, Config.scale, Config.scale);
-    } else {
-      context.fillStyle = 'rgba(99, 33, 20, 1)';
-      context.fillRect(x, y, Config.scale, Config.scale);
-    }
-
-    context.shadowBlur = Math.random() * 10;
-    context.shadowColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.color[2]})`;
-    context.fillStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, 0.5)`;
-    context.fillRect(x, y, Config.scale, Config.scale);
-
-    context.shadowBlur = 0;
-    context.shadowColor = 'rgba(0,0,0,0)';
-  }
 
   update(matrix: GameMatrix) {
     for (let reach = 1; reach < this.flow; reach += 1) {

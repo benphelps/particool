@@ -6,11 +6,16 @@ import Steam from './Particles/Gasses/Steam';
 import Acid from './Particles/Liquids/Acid';
 import Lava from './Particles/Liquids/Lava';
 import Water from './Particles/Liquids/Water';
+import Particle from './Particles/Particle';
+import ParticleFactory from './Particles/ParticleFactory';
 import Ember from './Particles/Solids/Ember';
 import Gunpowder from './Particles/Solids/Gunpowder';
 import Sand from './Particles/Solids/Sand';
+import Seed from './Particles/Solids/Seed';
 import Stone from './Particles/Solids/Stone';
+import Vine from './Particles/Solids/Vine';
 import Wood from './Particles/Solids/Wood';
+import WebGL from './WebGL';
 
 class Game {
   private canvas: HTMLCanvasElement;
@@ -23,15 +28,19 @@ class Game {
 
   private CurrentParticle = Water;
 
+  private currentParticle: Particle;
+
   private mouseX = 0;
 
   private mouseY = 0;
 
   private drawingRadius = 4;
 
+  private webGL: WebGL;
+
   constructor(element: string) {
     this.canvas = document.getElementById(element) as HTMLCanvasElement;
-    this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+    // this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.matrix = new GameMatrix(Config.width, Config.height);
 
     this.canvas.width = Config.width * Config.scale;
@@ -39,7 +48,10 @@ class Game {
 
     this.canvas.style.width = `${this.canvas.width}px`;
 
+    this.webGL = new WebGL(element, Config.scale);
+
     this.setupEvents();
+    this.changeParticle('stone');
   }
 
   setupEvents() {
@@ -104,8 +116,10 @@ class Game {
     });
 
     this.canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
       const scale = e.deltaY * -0.01;
-      const newScale = Math.floor(this.drawingRadius + scale);
+      const newScale = Math.round(this.drawingRadius + scale);
       if (newScale >= 0) {
         this.drawingRadius = newScale;
       }
@@ -133,7 +147,13 @@ class Game {
       this.CurrentParticle = Steam;
     } else if (particle === 'acid') {
       this.CurrentParticle = Acid;
+    } else if (particle === 'seed') {
+      this.CurrentParticle = Seed;
+    } else if (particle === 'vine') {
+      this.CurrentParticle = Vine;
     }
+
+    this.currentParticle = ParticleFactory.getParticle(this.CurrentParticle, 0, 0);
 
     const elements: Element[] = Array.from(document.getElementsByClassName('button'));
     elements.forEach((button) => {
@@ -215,10 +235,13 @@ class Game {
     for (let y = -radius; y <= radius; y += 1) {
       for (let x = -radius; x <= radius; x += 1) {
         if (x * x + y * y <= radius * radius) {
-          this.context.fillStyle = 'rgba(0, 0, 0, 0.2)';
-          this.context.fillRect(
-            (cx + x) * Config.scale, (cy + y) * Config.scale, Config.scale, Config.scale,
+          this.webGL.setColor(
+            this.currentParticle.color[0],
+            this.currentParticle.color[1],
+            this.currentParticle.color[2],
+            0.45,
           );
+          this.webGL.drawPixel((cx + x) * Config.scale, (cy + y) * Config.scale);
         }
       }
     }
@@ -238,18 +261,33 @@ class Game {
       this.drawCircle(this.mouseX, this.mouseY);
     }
 
-    // if (timestamp % 4) {
     this.matrix.update();
-    // }
-
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.fillStyle = 'white';
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.matrix.draw(this.context);
+    this.webGL.clear();
+    this.matrix.draw(this.webGL);
 
     this.drawCursor(this.mouseX, this.mouseY);
 
     window.requestAnimationFrame((ts) => this.update(ts));
+    // setTimeout(() => { this.update(1); }, 1000);
+
+    // eslint-disable-next-line no-console
+    // console.log(ParticleFactory.used, ParticleFactory.free);
+
+    let freeBlock = '';
+    let usedBlock = '';
+
+    Object.keys(ParticleFactory.usedParticles).forEach((type) => {
+      const particles = ParticleFactory.usedParticles[type];
+      usedBlock += `${type}: ${particles.length}<br>\n`;
+    });
+
+    Object.keys(ParticleFactory.freeParticles).forEach((type) => {
+      const particles = ParticleFactory.freeParticles[type];
+      freeBlock += `${type}: ${particles.length}<br>\n`;
+    });
+
+    document.getElementById('free').innerHTML = freeBlock;
+    document.getElementById('used').innerHTML = usedBlock;
   }
 }
 

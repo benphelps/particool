@@ -91,3 +91,29 @@ canvas {
   background-color: rgb(139, 196, 79);
   color: rgb(232, 255, 208);
 }
+
+.button[id="vine"] {
+  background-color: rgb(172, 219, 151);
+  color: rgb(37, 64, 42);
+}
+
+.button[id="seed"] {
+  background-color: rgb(172, 219, 151);
+  color: rgb(37, 64, 42);
+}
+
+.debug {
+  font-family: monospace;
+  margin: 5px auto;
+  display: block;
+  width: 600px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+}
+
+.debug-block {
+  width: 50%;
+  margin: 0;
+  padding: 0;
+}
